@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 
 user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"
 headers = {"User-Agent": user_agent}
+parser = "html.parser"
 
 
 def fetch_pages():
@@ -10,7 +11,7 @@ def fetch_pages():
     req = Request(url=url, headers=headers)
     res = urlopen(req)
     data = res.read()
-    soup = BeautifulSoup(data, "html.parser")
+    soup = BeautifulSoup(data, parser)
 
     teams = [item.text.strip() for item in soup.select("a")]
     teams = [
@@ -27,7 +28,7 @@ def fetch_source(page_url):
     req = Request(url=page_url, headers=headers)
     res = urlopen(req)
     data = res.read()
-    soup = BeautifulSoup(data, "html.parser")
+    soup = BeautifulSoup(data, parser)
     return soup.find("iframe")["src"]
 
 
@@ -36,7 +37,7 @@ def fetch_server(page_url):
     req = Request(url=source_url, headers=headers)
     res = urlopen(req)
     data = res.read()
-    soup = BeautifulSoup(data, "html.parser")
+    soup = BeautifulSoup(data, parser)
     return soup.find_all("tr")[2].find("a")["href"]  # mazystreams
 
 
